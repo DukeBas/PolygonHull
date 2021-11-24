@@ -65,15 +65,18 @@ export class Polygon {
     // insert point between the points of that line segment
     const index = this.getIndexClosestLineSegment(point);
     this.addPointAt(point, index);
-    this.drawTriangle(
-      p,
-      this.points[index - 1 < 0 ? this.points.length - 1 : index - 1],
-      this.points[index],
-      this.points[index + 1 < this.points.length ? index + 1 : 0]
-    );
+    if (this.points.length > 2) {
+      p.fill(p.random(255), p.random(255), p.random(255));
+      this.drawTriangle(
+        p,
+        this.points[index - 1 < 0 ? this.points.length - 1 : index - 1],
+        this.points[index],
+        this.points[index + 1 < this.points.length ? index + 1 : 0]
+      );
+    }
   }
 
-  drawPolygon(p: p5) {
+  draw(p: p5) {
     p.beginShape();
     this.points.forEach((point) => p.vertex(point.x, point.y));
     p.endShape(p.CLOSE);

@@ -14,7 +14,7 @@ const sketch = (p: p5) => {
 
     canvas.position(0, 0); // make canvas start in top-left corner
     canvas.style("z-index", "-1"); // set canvas as background
-    p.frameRate(60); // target framerate
+    p.frameRate(5); // target framerate
 
     p.background(0);
     p.stroke(255);
@@ -29,11 +29,21 @@ const sketch = (p: p5) => {
   p.draw = () => {
     // p.background(0,200,200);
     // p.ellipse(100, 150, 180, 60);
-    
 
-    polygon.insertPointAndDraw(p, new Point(p.random(p.width), p.random(p.height)));
+    const newPoint = new Point(p.random(p.width), p.random(p.height));
 
-    p.noLoop();
+    if (p.frameCount % 5 !== 0) {
+      if (polygon.pointInPolygon(newPoint)) {
+        console.log("point in polygon");
+      } else {
+        polygon.insertPointAndDraw(p, newPoint);
+      }
+    } else {
+      polygon.draw(p);
+      p.noLoop();
+    }
+
+    // p.noLoop();
   };
 
   // set functions as global functions
