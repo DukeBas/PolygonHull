@@ -1,3 +1,4 @@
+import p5 from "p5";
 import { Point } from "./point";
 
 // export function distanceBetweenPoints(p1: Point, p2: Point): number {
@@ -39,4 +40,12 @@ export function distancePointToLineSegment(
   const dx = p.x - xx;
   const dy = p.y - yy;
   return Math.sqrt(dx * dx + dy * dy);
+}
+
+export function drawTriangleOnCanvas(p: p5, p1: Point, p2: Point, p3: Point): void {
+  p.beginShape();
+  p.vertex(p1.x, p1.y);
+  p.vertex(p2.x, p2.y);
+  p.vertex(p3.x, p3.y);
+  p.endShape(p.CLOSE);
 }

@@ -1,6 +1,6 @@
 import p5 from "p5";
 import { Point } from "./Point";
-import { distancePointToLineSegment} from "./helper";
+import { distancePointToLineSegment, drawTriangleOnCanvas } from "./helper";
 
 export class Polygon {
   // points define the polygon clockwise or counter-clockwise, meaning the first point creates a line segment to
@@ -12,7 +12,7 @@ export class Polygon {
     this.points = points;
   }
 
-  pointInPolygon(point: Point): boolean {
+  private pointInPolygon(point: Point): boolean {
     let inside = false;
     for (
       let i = 0, j = this.points.length - 1;
@@ -33,8 +33,7 @@ export class Polygon {
     return inside;
   }
 
-  // private addPointAt(point: Point, index: number): void {
-  addPointAt(point: Point, index: number): void {
+  private addPointAt(point: Point, index: number): void {
     this.points.splice(index, 0, point);
   }
 
@@ -59,15 +58,28 @@ export class Polygon {
     return closestIndex;
   }
 
-  // doesn't draw if less than 3 points after insertion
-  insertPointAndDraw(p: p5, point: Point) {
+  addPoint(p: p5, point: Point): void {
+    // currently assumes point is outside of polygon
+    this.insertOuterPoint(p, point);
+  }
+
+  /*
+    Currently does nothing.
+  */
+  private insertInnerPoint(p: p5, point: Point): void {}
+
+  /*
+    Inserts a point in the polygon data structure and draws a triangle for the newly added point.
+    doesn't draw if less than 3 points after insertion
+  */
+  private insertOuterPoint(p: p5, point: Point): void {
     // find line segment that is closest to point
     // insert point between the points of that line segment
     const index = this.getIndexClosestLineSegment(point);
     this.addPointAt(point, index);
     if (this.points.length > 2) {
       p.fill(p.random(255), p.random(255), p.random(255));
-      this.drawTriangle(
+      drawTriangleOnCanvas(
         p,
         this.points[index - 1 < 0 ? this.points.length - 1 : index - 1],
         this.points[index],
@@ -76,19 +88,14 @@ export class Polygon {
     }
   }
 
-  draw(p: p5) {
+  draw(p: p5): void {
+    p.push();
+    p.noFill();
+    p.stroke(200, 0, 0);
+    p.strokeWeight(4);
     p.beginShape();
     this.points.forEach((point) => p.vertex(point.x, point.y));
     p.endShape(p.CLOSE);
-  }
-
-  drawTriangle(p: p5, p1: Point, p2: Point, p3: Point) {
-    p.beginShape();
-    p.vertex(p1.x, p1.y);
-    p.vertex(p2.x, p2.y);
-    p.vertex(p3.x, p3.y);
-    p.endShape(p.CLOSE);
+    p.pop();
   }
 }
-
-
