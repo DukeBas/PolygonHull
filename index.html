@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Canvas</title>
+    <script>
+      function changeState() {
+        setState(document.getElementById("state").value);
+      }
+    </script>
+  </head>
 
-<head>
-  <!-- <link rel="stylesheet" href="style.scss"> -->
+  <!-- <body onload="openSidebar()"> -->
 
-  <title>Canvas</title>
+  <body>
+    <div id="sidebar">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()"
+        >&times;</a
+      >
+      <select
+        name="selector"
+        onchange="
+      changeState()
+    "
+        id="state"
+      >
+        <option value="Clean">Clean</option>
+        <option value="Detailed">Detailed</option>
+        <option value="Inverted">Inverted</option>
+      </select>
 
-  <!-- <link rel="shortcut icon" href="" /> -->
-  <!-- <link rel="icon" href="" /> -->
-</head>
-
-<!-- <body onload="openSidebar()"> -->
-
-<body>
-  <div id="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
-    <select name="selector" onchange="alert('Changed!')">
-      <option value="a">a</option>
-      <option value="b">b</option>
-    </select>
-    <br><br><br>
-    <input type="color" value="#ff0000" class="color-picker" onchange="alert(this.value)">
-    <br><br><br>
-    <div class="sliderBox">
-      <span>Slider value: </span> <span id="first-slider-value">DEFAULT VALUE</span><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="first-slider"
-        oninput="document.getElementById('first-slider-value').innerHTML = this.value" onchange="alert(this.value)">
+      <br /><br /><br />
+      <button onclick="windowResized();" id="reset-button">Reset canvas</button>
+      <button onclick="saveCanvas('canvas', 'png');" id="download-button">
+        Download canvas
+      </button>
+      <a href="https://github.com/DukeBas/">
+        <img src="GitHub-light.png" alt="Github link" id="GitHub" />
+      </a>
     </div>
+  </body>
 
-    <br><br><br>
-    <button onclick="windowResized();" id="reset-button">Reset canvas</button>
-    <button onclick="saveCanvas('canvas', 'png');" id="download-button">Download canvas</button>
-    <a href="https://github.com/DukeBas/">
-      <img src="GitHub-light.png" alt="Github link" id="GitHub">
-    </a>
-  </div>
-</body>
-
-<div id="openSide" onclick="openSidebar()">&#9881;</div>
-
+  <div id="openSide" onclick="openSidebar()">&#9881;</div>
 </html>
