@@ -6,7 +6,7 @@ export class Polygon {
   // points define the polygon clockwise or counter-clockwise, meaning the first point creates a line segment to
   // the second point, then the second point creates a line segment to the third point, and so on, until
   // the last point connects to the first point
-  points: Point[];
+  private points: Point[];
 
   constructor(points: Point[]) {
     this.points = points;
@@ -44,29 +44,60 @@ export class Polygon {
   private getIndexClosestLineSegment(p: Point): number {
     let closestIndex = 0;
     let closestDistance = Infinity;
-    for (let i = 0; i < this.points.length - 1; i++) {
+    for (let i = 0; i < this.points.length; i++) {
       const dist = distancePointToLineSegment(
         p,
         this.points[i],
         this.points[i + 1 < this.points.length ? i + 1 : 0]
       );
+      // console.log(
+      //   "Distance from " +
+      //     "(" +
+      //     p.x +
+      //     ", " +
+      //     p.y +
+      //     ")" +
+      //     " to line starting at " +
+      //     "(" +
+      //     this.points[i].x +
+      //     ", " +
+      //     this.points[i].y +
+      //     ")" +
+      //     " and ending at " +
+      //     "(" +
+      //     this.points[i + 1 < this.points.length ? i + 1 : 0].x +
+      //     ", " +
+      //     this.points[i + 1 < this.points.length ? i + 1 : 0].y +
+      //     ")" +
+      //     dist,
+      //   closestDistance
+      // );
       if (dist < closestDistance) {
         closestDistance = dist;
         closestIndex = i;
       }
     }
+    // console.log("so closest index is " + closestIndex);
     return closestIndex;
   }
 
   addPoint(p: p5, point: Point): void {
-    // currently assumes point is outside of polygon
-    this.insertOuterPoint(p, point);
+    if (this.pointInPolygon(point)) {
+      this.insertInnerPoint(p, point);
+    } else {
+      this.insertOuterPoint(p, point);
+    }
   }
 
   /*
-    Currently does nothing.
+    Currently places a dot signifying a point inside the polygon.
   */
-  private insertInnerPoint(p: p5, point: Point): void {}
+  private insertInnerPoint(p: p5, point: Point): void {
+    p.push();
+    p.strokeWeight(10);
+    p.point(point.x, point.y);
+    p.pop();
+  }
 
   /*
     Inserts a point in the polygon data structure and draws a triangle for the newly added point.
@@ -75,8 +106,10 @@ export class Polygon {
   private insertOuterPoint(p: p5, point: Point): void {
     // find line segment that is closest to point
     // insert point between the points of that line segment
-    const index = this.getIndexClosestLineSegment(point);
+    const index = this.getIndexClosestLineSegment(point) + 1;
+
     this.addPointAt(point, index);
+
     if (this.points.length > 2) {
       p.fill(p.random(255), p.random(255), p.random(255));
       drawTriangleOnCanvas(

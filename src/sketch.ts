@@ -13,27 +13,32 @@ const sketch = (p: p5) => {
     p.disableFriendlyErrors = true; // disable friendly errors for increased performance
     canvas.position(0, 0); // make canvas start in top-left corner
     canvas.style("z-index", "-1"); // set canvas as background
-    p.frameRate(2); // target framerate
+    p.frameRate(60); // target framerate
     initialiseCanvas(p);
 
     // initalise polygon singleton
     polygon = new Polygon([
-      // new Point(p.random(p.width), p.random(p.height)), 
-      // new Point(p.random(p.width), p.random(p.height)), 
-      new Point(100,100),
-      new Point(500,100),
+      new Point(p.random(p.width), p.random(p.height)), 
+      new Point(p.random(p.width), p.random(p.height)), 
+      // new Point(100,100),
+      // new Point(500,100),
     ]);
 
-    polygon.addPoint(p, new Point(300,300));
-    polygon.addPoint(p, new Point(400,400));
-    // polygon.insertPointAndDrawTriangle(p, new Point(400,400));
-    polygon.addPoint(p, new Point(500,500));
-    polygon.addPoint(p, new Point(100,500));
-    polygon.addPoint(p, new Point(200,200));
+    // polygon.addPoint(p, new Point(300,300));
+    // polygon.addPoint(p, new Point(400,400));
+    // // polygon.insertPointAndDrawTriangle(p, new Point(400,400));
+    // polygon.addPoint(p, new Point(500,500));
+    // polygon.addPoint(p, new Point(100,500));
+
+    // polygon.addPoint(p, new Point(250,200));
+    // polygon.addPoint(p, new Point(100,300));
+
+    // polygon.addPoint(p, new Point(500,200));
+    // polygon.addPoint(p, new Point(100,500));
 
     // polygon.insertPointAndDrawTriangle(p, new Point(p.random(p.width), p.random(p.height)));
 
-    polygon.draw(p);
+    // polygon.draw(p);
   };
 
   p.windowResized = () => {
@@ -44,13 +49,16 @@ const sketch = (p: p5) => {
     // p.background(0,200,200);
     // p.ellipse(100, 150, 180, 60);
 
-    // const newPoint = new Point(p.random(p.width), p.random(p.height));
 
-    // polygon.insertPointAndDrawTriangle(p, newPoint);
+    const newPoint = new Point(p.random(p.width), p.random(p.height));
+    polygon.addPoint(p, newPoint);
+    polygon.draw(p);
 
-    if (p.frameCount > -1) {
-      p.noLoop();
-    }
+
+
+    // if (p.frameCount > -1) {
+    //   p.noLoop();
+    // }
 
     // if (p.frameCount % 5 !== 0) {
     //   if (polygon.pointInPolygon(newPoint)) {
