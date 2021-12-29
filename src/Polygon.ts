@@ -83,7 +83,7 @@ export class Polygon {
 
   addPoint(p: p5, point: Point): void {
     if (this.pointInPolygon(point)) {
-      this.insertInnerPoint(p, point);
+      // this.insertInnerPoint(p, point);
     } else {
       this.insertOuterPoint(p, point);
     }

@@ -2,15 +2,8 @@ import p5 from "p5";
 import { Point } from "./point";
 import { Polygon } from "./polygon";
 
-enum State {
-  Clean,
-  Detailed,
-  Inverted,
-}
-
 const sketch = (p: p5) => {
   let polygon: Polygon;
-  let state: State;
 
   p.setup = () => {
     // configure canvas
@@ -20,16 +13,6 @@ const sketch = (p: p5) => {
     canvas.style("z-index", "-1"); // set canvas as background
     p.frameRate(60); // target framerate
     initialiseCanvas(p);
-
-    // get initial state from DOM
-    const initialState = document.getElementById("state") as HTMLInputElement;
-    if (initialState.value === "clean") {
-      state = State.Clean;
-    } else if (initialState.value === "detailed") {
-      state = State.Detailed;
-    } else {
-      state = State.Inverted;
-    }
 
     // initalise polygon singleton
     polygon = new Polygon([
@@ -45,17 +28,12 @@ const sketch = (p: p5) => {
   p.draw = () => {
     const newPoint = new Point(p.random(p.width), p.random(p.height));
     polygon.addPoint(p, newPoint);
-    if (state === State.Detailed) {
-      polygon.draw(p);
-    }
+    // polygon.draw(p);
   };
 
   // set functions as global functions
   window.saveCanvas = () => p.saveCanvas("canvas", "png");
   window.windowResized = p.windowResized;
-  window.setState = (newState: State) => {
-    state = newState;
-  };
 };
 
 function initialiseCanvas(p: p5) {
